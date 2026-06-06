@@ -7,13 +7,11 @@ paths:
   /api/portfolio/projects/:
     get:
       operationId: portfolio_projects_list
-      description: API endpoint that allows projects to be viewed.
+      description: API endpoint that allows projects to be viewed and edited by admin.
       tags:
       - portfolio
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - jwtAuth: []
       responses:
         '200':
           content:
@@ -23,10 +21,36 @@ paths:
                 items:
                   $ref: '#/components/schemas/Project'
           description: ''
+    post:
+      operationId: portfolio_projects_create
+      description: API endpoint that allows projects to be viewed and edited by admin.
+      tags:
+      - portfolio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
   /api/portfolio/projects/{id}/:
     get:
       operationId: portfolio_projects_retrieve
-      description: API endpoint that allows projects to be viewed.
+      description: API endpoint that allows projects to be viewed and edited by admin.
       parameters:
       - in: path
         name: id
@@ -37,9 +61,7 @@ paths:
       tags:
       - portfolio
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - jwtAuth: []
       responses:
         '200':
           content:
@@ -47,6 +69,88 @@ paths:
               schema:
                 $ref: '#/components/schemas/Project'
           description: ''
+    put:
+      operationId: portfolio_projects_update
+      description: API endpoint that allows projects to be viewed and edited by admin.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - portfolio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    patch:
+      operationId: portfolio_projects_partial_update
+      description: API endpoint that allows projects to be viewed and edited by admin.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - portfolio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    delete:
+      operationId: portfolio_projects_destroy
+      description: API endpoint that allows projects to be viewed and edited by admin.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - portfolio
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/service/custom-requests/:
     post:
       operationId: service_custom_requests_create
@@ -66,8 +170,7 @@ paths:
               $ref: '#/components/schemas/CustomServiceRequest'
         required: true
       security:
-      - cookieAuth: []
-      - basicAuth: []
+      - jwtAuth: []
       - {}
       responses:
         '201':
@@ -95,8 +198,7 @@ paths:
               $ref: '#/components/schemas/ServiceRequest'
         required: true
       security:
-      - cookieAuth: []
-      - basicAuth: []
+      - jwtAuth: []
       - {}
       responses:
         '201':
@@ -108,13 +210,11 @@ paths:
   /api/service/services/:
     get:
       operationId: service_services_list
-      description: API endpoint to list and view available services.
+      description: API endpoint to list, view, and edit available services.
       tags:
       - service
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - jwtAuth: []
       responses:
         '200':
           content:
@@ -124,10 +224,36 @@ paths:
                 items:
                   $ref: '#/components/schemas/Service'
           description: ''
+    post:
+      operationId: service_services_create
+      description: API endpoint to list, view, and edit available services.
+      tags:
+      - service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Service'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
   /api/service/services/{id}/:
     get:
       operationId: service_services_retrieve
-      description: API endpoint to list and view available services.
+      description: API endpoint to list, view, and edit available services.
       parameters:
       - in: path
         name: id
@@ -138,9 +264,7 @@ paths:
       tags:
       - service
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - jwtAuth: []
       responses:
         '200':
           content:
@@ -148,16 +272,97 @@ paths:
               schema:
                 $ref: '#/components/schemas/Service'
           description: ''
+    put:
+      operationId: service_services_update
+      description: API endpoint to list, view, and edit available services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service.
+        required: true
+      tags:
+      - service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Service'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    patch:
+      operationId: service_services_partial_update
+      description: API endpoint to list, view, and edit available services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service.
+        required: true
+      tags:
+      - service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedService'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedService'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedService'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    delete:
+      operationId: service_services_destroy
+      description: API endpoint to list, view, and edit available services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service.
+        required: true
+      tags:
+      - service
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/team/team/:
     get:
       operationId: team_team_list
-      description: API endpoint that allows team members to be viewed.
+      description: API endpoint that allows team members to be viewed and edited by
+        admin.
       tags:
       - team
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - jwtAuth: []
       responses:
         '200':
           content:
@@ -167,10 +372,38 @@ paths:
                 items:
                   $ref: '#/components/schemas/TeamMember'
           description: ''
+    post:
+      operationId: team_team_create
+      description: API endpoint that allows team members to be viewed and edited by
+        admin.
+      tags:
+      - team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TeamMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TeamMember'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMember'
+          description: ''
   /api/team/team/{id}/:
     get:
       operationId: team_team_retrieve
-      description: API endpoint that allows team members to be viewed.
+      description: API endpoint that allows team members to be viewed and edited by
+        admin.
       parameters:
       - in: path
         name: id
@@ -181,15 +414,152 @@ paths:
       tags:
       - team
       security:
-      - cookieAuth: []
-      - basicAuth: []
-      - {}
+      - jwtAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TeamMember'
+          description: ''
+    put:
+      operationId: team_team_update
+      description: API endpoint that allows team members to be viewed and edited by
+        admin.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team member.
+        required: true
+      tags:
+      - team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TeamMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TeamMember'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMember'
+          description: ''
+    patch:
+      operationId: team_team_partial_update
+      description: API endpoint that allows team members to be viewed and edited by
+        admin.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team member.
+        required: true
+      tags:
+      - team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeamMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTeamMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTeamMember'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMember'
+          description: ''
+    delete:
+      operationId: team_team_destroy
+      description: API endpoint that allows team members to be viewed and edited by
+        admin.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team member.
+        required: true
+      tags:
+      - team
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
           description: ''
 components:
   schemas:
@@ -260,6 +630,90 @@ components:
       required:
       - id
       - image
+    PatchedProject:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectMedia'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedService:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceMedia'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedTeamMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        role:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          nullable: true
+        user:
+          type: integer
     Project:
       type: object
       properties:
@@ -431,11 +885,40 @@ components:
       - role
       - updated_at
       - user
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
   securitySchemes:
-    basicAuth:
+    jwtAuth:
       type: http
-      scheme: basic
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: sessionid
+      scheme: bearer
+      bearerFormat: JWT

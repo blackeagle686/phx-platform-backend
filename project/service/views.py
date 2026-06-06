@@ -8,14 +8,15 @@ from .serializers import (
     CustomServiceRequestSerializer
 )
 from .tasks import process_new_service_request
+from project.permissions import IsAdminUserOrReadOnly
 
-class ServiceViewSet(viewsets.ReadOnlyModelViewSet):
+class ServiceViewSet(viewsets.ModelViewSet):
     """
-    API endpoint to list and view available services.
+    API endpoint to list, view, and edit available services.
     """
     queryset = Service.objects.all().order_by('-created_at')
     serializer_class = ServiceSerializer
-
+    permission_classes = [IsAdminUserOrReadOnly]
 class ServiceRequestViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     API endpoint to create a new standard service request.
