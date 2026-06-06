@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: Portfolio Platform API
+  version: 1.0.0
+  description: API for Portfolio Platform handling projects, services, and team members.
+paths:
+  /api/portfolio/projects/:
+    get:
+      operationId: portfolio_projects_list
+      description: API endpoint that allows projects to be viewed.
+      tags:
+      - portfolio
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+          description: ''
+  /api/portfolio/projects/{id}/:
+    get:
+      operationId: portfolio_projects_retrieve
+      description: API endpoint that allows projects to be viewed.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - portfolio
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/service/custom-requests/:
+    post:
+      operationId: service_custom_requests_create
+      description: API endpoint to create a new custom service request.
+      tags:
+      - service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomServiceRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomServiceRequest'
+          description: ''
+  /api/service/service-requests/:
+    post:
+      operationId: service_service_requests_create
+      description: API endpoint to create a new standard service request.
+      tags:
+      - service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRequest'
+          description: ''
+  /api/service/services/:
+    get:
+      operationId: service_services_list
+      description: API endpoint to list and view available services.
+      tags:
+      - service
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+          description: ''
+  /api/service/services/{id}/:
+    get:
+      operationId: service_services_retrieve
+      description: API endpoint to list and view available services.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service.
+        required: true
+      tags:
+      - service
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+  /api/team/team/:
+    get:
+      operationId: team_team_list
+      description: API endpoint that allows team members to be viewed.
+      tags:
+      - team
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMember'
+          description: ''
+  /api/team/team/{id}/:
+    get:
+      operationId: team_team_retrieve
+      description: API endpoint that allows team members to be viewed.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team member.
+        required: true
+      tags:
+      - team
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMember'
+          description: ''
+components:
+  schemas:
+    CustomServiceRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomServiceRequestMedia'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        company:
+          type: string
+          nullable: true
+          maxLength: 100
+        title:
+          type: string
+          maxLength: 200
+        technical_brief:
+          type: string
+        overall_description:
+          type: string
+        contact_method:
+          type: string
+          maxLength: 50
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - contact_method
+      - created_at
+      - email
+      - id
+      - media
+      - name
+      - overall_description
+      - technical_brief
+      - title
+      - updated_at
+    CustomServiceRequestMedia:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: uri
+        document:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - id
+      - image
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectMedia'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - description
+      - id
+      - media
+      - title
+      - updated_at
+    ProjectMedia:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+    Service:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        cover_image:
+          type: string
+          format: uri
+          nullable: true
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceMedia'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - description
+      - id
+      - media
+      - title
+      - updated_at
+    ServiceMedia:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: uri
+      required:
+      - id
+      - image
+    ServiceRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        company:
+          type: string
+          nullable: true
+          maxLength: 100
+        contact_method:
+          type: string
+          maxLength: 50
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        service:
+          type: integer
+      required:
+      - contact_method
+      - created_at
+      - email
+      - id
+      - message
+      - name
+      - service
+      - updated_at
+    TeamMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        role:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          nullable: true
+        user:
+          type: integer
+      required:
+      - created_at
+      - description
+      - id
+      - name
+      - role
+      - updated_at
+      - user
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

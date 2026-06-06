@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8089 --workers 3 project.wsgi:application
+    volumes:
+      - ./project:/app/project
+    ports:
+      - "8089:8089"
+    environment:
+      - DEBUG=1
+      - CELERY_BROKER_URL=redis://redis:6401/0
+      - CELERY_RESULT_BACKEND=redis://redis:6401/0
+    depends_on:
+      - redis
+
+  celery:
+    build: .
+    command: celery -A project worker -l info
+    volumes:
+      - ./project:/app/project
+    environment:
+      - DEBUG=1
+      - CELERY_BROKER_URL=redis://redis:6401/0
+      - CELERY_RESULT_BACKEND=redis://redis:6401/0
+    depends_on:
+      - redis
+      - web
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server --port 6401
+    ports:
+      - "6401:6401"
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    environment:
+      - NGROK_AUTHTOKEN=36jW6kAV8Inp5SHYiuIicuuRols_7NkiWdLme3iULLJx3gMS5
+    command: http web:8089
+    depends_on:
+      - web
+    ports:
+      - "4040:4040"
