@@ -41,5 +41,3 @@ services:
     command: http web:8089
     depends_on:
       - web
-    ports:
-      - "4041:4040"
