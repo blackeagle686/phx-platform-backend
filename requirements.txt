@@ -7,3 +7,4 @@ django-cors-headers
 drf-spectacular
 gunicorn
 djangorestframework-simplejwt
+whitenoise
