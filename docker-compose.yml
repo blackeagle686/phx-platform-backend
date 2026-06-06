@@ -41,3 +41,15 @@ services:
     command: http web:8089
     depends_on:
       - web
+
+  ngrok-logger:
+    image: python:3.12-slim
+    depends_on:
+      - ngrok
+    command: >
+      sh -c "
+      sleep 5;
+      python -c \"import urllib.request, json;
+      data = json.loads(urllib.request.urlopen('http://ngrok:4040/api/tunnels').read().decode());
+      print('\n\n' + '='*50 + '\n🚀 YOUR PUBLIC NGROK URL IS: \n' + data['tunnels'][0]['public_url'] + '\n' + '='*50 + '\n\n')\"
+      "
