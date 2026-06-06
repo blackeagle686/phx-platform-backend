@@ -42,4 +42,4 @@ services:
     depends_on:
       - web
     ports:
-      - "4040:4040"
+      - "4041:4040"
